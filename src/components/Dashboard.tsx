@@ -6,8 +6,20 @@ import { Calendar, Clock, CheckCheck, AlertTriangle, LineChart, ChevronRight } f
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
+import { 
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import CreateRetroForm from './CreateRetroForm';
 
-export default function Dashboard() {
+interface DashboardProps {
+  onRetroSelect: (retroId: string) => void;
+}
+
+export default function Dashboard({ onRetroSelect }: DashboardProps) {
   const { retros, teams, currentTeam, setCurrentRetro } = useRetro();
   
   const upcomingRetros = retros.filter(retro => retro.status === 'upcoming');
@@ -15,7 +27,7 @@ export default function Dashboard() {
   
   const handleRetroClick = (retro: any) => {
     setCurrentRetro(retro);
-    // In a real app, navigate to retro detail page
+    onRetroSelect(retro.id);
   };
 
   return (
@@ -26,9 +38,19 @@ export default function Dashboard() {
             <h1 className="text-3xl font-bold text-retro-blue">Team Dashboard</h1>
             <p className="text-muted-foreground">Track your team's progress and plan effective retrospectives</p>
           </div>
-          <Button className="bg-retro-teal hover:bg-retro-teal/90">
-            Create New Retro
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="bg-retro-teal hover:bg-retro-teal/90">
+                Create New Retro
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Create New Retrospective</DialogTitle>
+              </DialogHeader>
+              <CreateRetroForm onSuccess={() => onRetroSelect("1")} />
+            </DialogContent>
+          </Dialog>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -77,7 +99,17 @@ export default function Dashboard() {
             <Card className="col-span-full bg-muted/40">
               <CardContent className="p-6 text-center">
                 <p className="text-muted-foreground">No upcoming retrospectives scheduled</p>
-                <Button variant="outline" className="mt-4">Schedule a Retro</Button>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" className="mt-4">Schedule a Retro</Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                      <DialogTitle>Create New Retrospective</DialogTitle>
+                    </DialogHeader>
+                    <CreateRetroForm onSuccess={() => onRetroSelect("1")} />
+                  </DialogContent>
+                </Dialog>
               </CardContent>
             </Card>
           )}

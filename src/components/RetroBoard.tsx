@@ -4,15 +4,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { ChevronUp, Plus, ThumbsUp, X, MessageSquare } from 'lucide-react';
+import { ChevronUp, Plus, ThumbsUp, X, MessageSquare, ArrowLeft } from 'lucide-react';
 import { useRetro, RetroItem, RetroItemType } from '@/context/RetroContext';
 import { cn } from '@/lib/utils';
 
 interface RetroBoardProps {
   retroId: string;
+  onBack?: () => void;
 }
 
-const RetroBoard: React.FC<RetroBoardProps> = ({ retroId }) => {
+const RetroBoard: React.FC<RetroBoardProps> = ({ retroId, onBack }) => {
   const { retros, currentRetro, addRetroItem, voteRetroItem, deleteRetroItem } = useRetro();
   const [newItemText, setNewItemText] = useState<string>('');
   const [activeColumn, setActiveColumn] = useState<RetroItemType | null>(null);
@@ -44,9 +45,22 @@ const RetroBoard: React.FC<RetroBoardProps> = ({ retroId }) => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-retro-blue">{retro.title}</h1>
-          <p className="text-muted-foreground">{retro.description}</p>
+        <div className="flex items-center gap-3">
+          {onBack && (
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="flex items-center gap-1 text-retro-blue" 
+              onClick={onBack}
+            >
+              <ArrowLeft size={16} />
+              Back to Dashboard
+            </Button>
+          )}
+          <div>
+            <h1 className="text-3xl font-bold text-retro-blue">{retro.title}</h1>
+            <p className="text-muted-foreground">{retro.description}</p>
+          </div>
         </div>
         <div className="flex gap-2">
           <Button variant="outline">Export</Button>

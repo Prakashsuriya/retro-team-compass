@@ -11,10 +11,12 @@ const Index = () => {
   return (
     <RetroProvider>
       <div className="min-h-screen flex flex-col bg-retro-light">
-        <Navigation />
+        <Navigation activeView={activeView} setActiveView={setActiveView} />
         <main className="flex-1">
-          {activeView === 'dashboard' && <Dashboard />}
-          {activeView === 'retro' && <RetroBoard retroId="1" />}
+          {activeView === 'dashboard' && <Dashboard onRetroSelect={(retroId) => {
+            setActiveView('retro');
+          }} />}
+          {activeView === 'retro' && <RetroBoard retroId="1" onBack={() => setActiveView('dashboard')} />}
         </main>
       </div>
     </RetroProvider>
