@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 // Types
@@ -59,6 +58,11 @@ const mockTeams: Team[] = [
     id: '2',
     name: 'Backend Team',
     members: ['Michael Brown', 'Emily Davis', 'Robert Wilson'],
+  },
+  {
+    id: '3',
+    name: 'Design Team',
+    members: ['Sarah Lee', 'Chris Martinez', 'Taylor Kim'],
   },
 ];
 
@@ -139,6 +143,124 @@ const mockRetros: Retro[] = [
     teamId: '1',
     status: 'upcoming',
     items: [],
+  },
+  {
+    id: '4',
+    title: 'UI/UX Design Review',
+    description: 'Evaluating our latest design system implementation',
+    date: '2023-04-18',
+    teamId: '3',
+    status: 'completed',
+    items: [
+      {
+        id: '401',
+        content: 'New component library improved development speed by 30%',
+        type: 'positive',
+        votes: 5,
+        author: 'Sarah Lee',
+        createdAt: '2023-04-18T09:30:00Z',
+      },
+      {
+        id: '402',
+        content: 'Mobile responsiveness issues on key landing pages',
+        type: 'negative',
+        votes: 3,
+        author: 'Chris Martinez',
+        createdAt: '2023-04-18T09:45:00Z',
+      },
+      {
+        id: '403',
+        content: 'Create comprehensive responsive design guidelines',
+        type: 'action',
+        votes: 4,
+        author: 'Taylor Kim',
+        createdAt: '2023-04-18T10:00:00Z',
+      },
+    ],
+  },
+  {
+    id: '5',
+    title: 'Performance Optimization Sprint',
+    description: 'Review of site performance improvements',
+    date: '2023-04-05',
+    teamId: '1',
+    status: 'completed',
+    items: [
+      {
+        id: '501',
+        content: 'Reduced page load time by 45%',
+        type: 'positive',
+        votes: 6,
+        author: 'John Doe',
+        createdAt: '2023-04-05T11:00:00Z',
+      },
+      {
+        id: '502',
+        content: 'Legacy code refactoring took longer than estimated',
+        type: 'negative',
+        votes: 2,
+        author: 'Jane Smith',
+        createdAt: '2023-04-05T11:10:00Z',
+      },
+      {
+        id: '503',
+        content: 'Implement performance monitoring system',
+        type: 'action',
+        votes: 5,
+        author: 'Alex Johnson',
+        createdAt: '2023-04-05T11:20:00Z',
+      },
+      {
+        id: '504',
+        content: 'Bundle optimization reduced JavaScript size by 30%',
+        type: 'positive',
+        votes: 4,
+        author: 'John Doe',
+        createdAt: '2023-04-05T11:30:00Z',
+      },
+    ],
+  },
+  {
+    id: '6',
+    title: 'Database Migration Post-Mortem',
+    description: 'Analysis of our recent database migration process',
+    date: '2023-03-15',
+    teamId: '2',
+    status: 'completed',
+    items: [
+      {
+        id: '601',
+        content: 'Zero downtime achieved during migration',
+        type: 'positive',
+        votes: 7,
+        author: 'Michael Brown',
+        createdAt: '2023-03-15T15:00:00Z',
+      },
+      {
+        id: '602',
+        content: 'Data validation scripts caught 15 critical issues before launch',
+        type: 'positive',
+        votes: 5,
+        author: 'Emily Davis',
+        createdAt: '2023-03-15T15:10:00Z',
+      },
+      {
+        id: '603',
+        content: 'Some query performance degradation post-migration',
+        type: 'negative',
+        votes: 4,
+        author: 'Robert Wilson',
+        createdAt: '2023-03-15T15:20:00Z',
+      },
+      {
+        id: '604',
+        content: 'Optimize high-traffic queries and add performance monitoring',
+        type: 'action',
+        votes: 6,
+        author: 'Michael Brown',
+        createdAt: '2023-03-15T15:30:00Z',
+      },
+    ],
   },
 ];
 

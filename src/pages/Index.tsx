@@ -3,6 +3,9 @@ import { RetroProvider } from '@/context/RetroContext';
 import Navigation from '@/components/Navigation';
 import Dashboard from '@/components/Dashboard';
 import RetroBoard from '@/components/RetroBoard';
+import Analytics from '@/components/Analytics';
+import Teams from '@/components/Teams';
+import Settings from '@/components/Settings';
 import { useState } from 'react';
 
 const Index = () => {
@@ -17,6 +20,9 @@ const Index = () => {
             setActiveView('retro');
           }} />}
           {activeView === 'retro' && <RetroBoard retroId="1" onBack={() => setActiveView('dashboard')} />}
+          {activeView === 'analytics' && <Analytics />}
+          {activeView === 'teams' && <Teams />}
+          {activeView === 'settings' && <Settings />}
         </main>
       </div>
     </RetroProvider>

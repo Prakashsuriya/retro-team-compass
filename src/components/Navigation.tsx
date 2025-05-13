@@ -81,7 +81,7 @@ const Navigation = ({ activeView, setActiveView }: NavigationProps) => {
             </DialogContent>
           </Dialog>
           <div className="bg-white text-retro-blue h-8 w-8 rounded-full flex items-center justify-center font-medium">
-            JD
+            PK
           </div>
         </div>
       </div>
