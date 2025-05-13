@@ -1,13 +1,23 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { RetroProvider } from '@/context/RetroContext';
+import Navigation from '@/components/Navigation';
+import Dashboard from '@/components/Dashboard';
+import RetroBoard from '@/components/RetroBoard';
+import { useState } from 'react';
 
 const Index = () => {
+  const [activeView, setActiveView] = useState('dashboard');
+  
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <RetroProvider>
+      <div className="min-h-screen flex flex-col bg-retro-light">
+        <Navigation />
+        <main className="flex-1">
+          {activeView === 'dashboard' && <Dashboard />}
+          {activeView === 'retro' && <RetroBoard retroId="1" />}
+        </main>
       </div>
-    </div>
+    </RetroProvider>
   );
 };
 

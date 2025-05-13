@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -18,6 +19,10 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				serif: ['Georgia', 'serif'],
+				sans: ['Inter', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -61,6 +66,15 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				retro: {
+					'blue': '#1a3a5f',
+					'teal': '#3c7a89',
+					'light-teal': '#81b5c4',
+					'sand': '#f5ebd7',
+					'coral': '#e57f50',
+					'light': '#f8f5f0',
+					'dark': '#2b2b2b',
 				}
 			},
 			borderRadius: {
@@ -84,11 +98,25 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					from: {
+						opacity: '0',
+						transform: 'translateY(10px)'
+					},
+					to: {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.4s ease-out'
+			},
+			gridTemplateColumns: {
+				'retro-board': 'repeat(auto-fit, minmax(300px, 1fr))'
 			}
 		}
 	},
