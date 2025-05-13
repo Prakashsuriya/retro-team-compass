@@ -12,8 +12,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from '@/components/ui/dialog';
 import CreateRetroForm from './CreateRetroForm';
+import { useToast } from '@/components/ui/use-toast';
 
 interface DashboardProps {
   onRetroSelect: (retroId: string) => void;
@@ -21,6 +23,8 @@ interface DashboardProps {
 
 export default function Dashboard({ onRetroSelect }: DashboardProps) {
   const { retros, teams, currentTeam, setCurrentRetro } = useRetro();
+  const { toast } = useToast();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   
   const upcomingRetros = retros.filter(retro => retro.status === 'upcoming');
   const completedRetros = retros.filter(retro => retro.status === 'completed');
@@ -30,17 +34,29 @@ export default function Dashboard({ onRetroSelect }: DashboardProps) {
     onRetroSelect(retro.id);
   };
 
+  const handleMetricCardClick = (title: string) => {
+    toast({
+      title: `${title} Details`,
+      description: `Showing detailed information for ${title} would appear here.`,
+    });
+  };
+
+  const handleCreateRetroSuccess = () => {
+    setIsDialogOpen(false);
+    onRetroSelect("1");
+  };
+
   return (
     <div className="container mx-auto px-4 py-8 space-y-10">
       <section className="space-y-4">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
           <div>
             <h1 className="text-3xl font-bold text-retro-blue">Team Dashboard</h1>
             <p className="text-muted-foreground">Track your team's progress and plan effective retrospectives</p>
           </div>
-          <Dialog>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-retro-teal hover:bg-retro-teal/90">
+              <Button className="bg-retro-teal hover:bg-retro-teal/90 w-full sm:w-auto">
                 Create New Retro
               </Button>
             </DialogTrigger>
@@ -48,35 +64,39 @@ export default function Dashboard({ onRetroSelect }: DashboardProps) {
               <DialogHeader>
                 <DialogTitle>Create New Retrospective</DialogTitle>
               </DialogHeader>
-              <CreateRetroForm onSuccess={() => onRetroSelect("1")} />
+              <CreateRetroForm onSuccess={handleCreateRetroSuccess} />
             </DialogContent>
           </Dialog>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           <MetricCard 
             title="Upcoming Retros" 
             value={upcomingRetros.length.toString()}
             description="Scheduled sessions"
             icon={<Calendar className="h-5 w-5 text-retro-teal" />}
+            onClick={() => handleMetricCardClick("Upcoming Retros")}
           />
           <MetricCard 
             title="Action Items" 
             value="12"
             description="4 completed, 8 pending"
             icon={<CheckCheck className="h-5 w-5 text-green-500" />}
+            onClick={() => handleMetricCardClick("Action Items")}
           />
           <MetricCard 
             title="Areas for Improvement" 
             value="7"
             description="Identified in last retro"
             icon={<AlertTriangle className="h-5 w-5 text-amber-500" />}
+            onClick={() => handleMetricCardClick("Areas for Improvement")}
           />
           <MetricCard 
             title="Sentiment Score" 
             value="71%"
             description="12% increase"
             icon={<LineChart className="h-5 w-5 text-retro-blue" />}
+            onClick={() => handleMetricCardClick("Sentiment Score")}
           />
         </div>
       </section>
@@ -124,7 +144,7 @@ export default function Dashboard({ onRetroSelect }: DashboardProps) {
           </Button>
         </div>
         
-        <div className="dashboard-grid">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {completedRetros.slice(0, 3).map((retro) => (
             <RetroCard 
               key={retro.id} 
@@ -139,14 +159,15 @@ export default function Dashboard({ onRetroSelect }: DashboardProps) {
   );
 }
 
-function MetricCard({ title, value, description, icon }: { 
+function MetricCard({ title, value, description, icon, onClick }: { 
   title: string; 
   value: string; 
   description: string;
   icon: React.ReactNode;
+  onClick: () => void;
 }) {
   return (
-    <Card className="border-none shadow-md">
+    <Card className="border-none shadow-md cursor-pointer transition-all hover:shadow-lg hover:scale-[1.01]" onClick={onClick}>
       <CardContent className="pt-6">
         <div className="flex justify-between items-start">
           <div>

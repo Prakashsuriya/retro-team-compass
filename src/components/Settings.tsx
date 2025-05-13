@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,9 +8,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useRetro } from '@/context/RetroContext';
+import { useToast } from '@/components/ui/use-toast';
 
 const Settings = () => {
   const { currentTeam } = useRetro();
+  const { toast } = useToast();
+  
   const [profileSettings, setProfileSettings] = useState({
     name: 'Parker Kim',
     email: 'parker.kim@example.com',
@@ -28,13 +30,30 @@ const Settings = () => {
   const handleProfileUpdate = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Updating profile settings:', profileSettings);
+    toast({
+      title: "Profile Updated",
+      description: "Your profile settings have been saved successfully.",
+    });
     // In a real app, this would update the user profile
   };
 
   const handleTeamUpdate = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Updating team settings:', teamSettings);
+    toast({
+      title: "Team Settings Updated",
+      description: "Team settings have been saved successfully.",
+    });
     // In a real app, this would update the team settings
+  };
+  
+  const handleDeleteTeam = () => {
+    console.log('Delete team clicked');
+    toast({
+      title: "Team Deletion",
+      description: "Team deletion functionality would be implemented here.",
+      variant: "destructive",
+    });
   };
 
   return (
@@ -59,14 +78,14 @@ const Settings = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleProfileUpdate}>
+              <form id="profileForm" onSubmit={handleProfileUpdate}>
                 <div className="space-y-6">
                   <div className="flex items-center space-x-4">
                     <Avatar className="h-16 w-16">
                       <AvatarFallback className="bg-retro-blue text-white">PK</AvatarFallback>
                     </Avatar>
                     <div>
-                      <Button size="sm" variant="outline">Upload Picture</Button>
+                      <Button size="sm" variant="outline" type="button">Upload Picture</Button>
                     </div>
                   </div>
                   
@@ -124,7 +143,7 @@ const Settings = () => {
               </form>
             </CardContent>
             <CardFooter>
-              <Button onClick={handleProfileUpdate}>Save Changes</Button>
+              <Button type="submit" form="profileForm">Save Changes</Button>
             </CardFooter>
           </Card>
         </TabsContent>
@@ -138,7 +157,7 @@ const Settings = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleTeamUpdate}>
+              <form id="teamForm" onSubmit={handleTeamUpdate}>
                 <div className="space-y-6">
                   <div className="grid gap-2">
                     <Label htmlFor="teamName">Team Name</Label>
@@ -184,7 +203,13 @@ const Settings = () => {
                   <Separator />
                   
                   <div className="space-y-2">
-                    <Button variant="destructive" type="button">Delete Team</Button>
+                    <Button 
+                      variant="destructive" 
+                      type="button" 
+                      onClick={handleDeleteTeam}
+                    >
+                      Delete Team
+                    </Button>
                     <p className="text-xs text-muted-foreground">
                       This action cannot be undone. All data will be permanently deleted.
                     </p>
@@ -193,7 +218,7 @@ const Settings = () => {
               </form>
             </CardContent>
             <CardFooter>
-              <Button onClick={handleTeamUpdate}>Save Team Settings</Button>
+              <Button type="submit" form="teamForm">Save Team Settings</Button>
             </CardFooter>
           </Card>
         </TabsContent>

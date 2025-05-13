@@ -15,7 +15,7 @@ const Index = () => {
     <RetroProvider>
       <div className="min-h-screen flex flex-col bg-retro-light">
         <Navigation activeView={activeView} setActiveView={setActiveView} />
-        <main className="flex-1">
+        <main className="flex-1 pt-2 pb-6 md:pt-4 md:pb-8">
           {activeView === 'dashboard' && <Dashboard onRetroSelect={(retroId) => {
             setActiveView('retro');
           }} />}

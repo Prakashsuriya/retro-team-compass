@@ -22,6 +22,8 @@ import { format } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { useRetro } from '@/context/RetroContext';
 import { cn } from '@/lib/utils';
+import { DialogClose } from '@/components/ui/dialog';
+import { useToast } from '@/components/ui/use-toast';
 
 interface FormData {
   title: string;
@@ -32,7 +34,9 @@ interface FormData {
 
 export default function CreateRetroForm({ onSuccess }: { onSuccess?: () => void }) {
   const { teams, addRetro } = useRetro();
+  const { toast } = useToast();
   const [date, setDate] = useState<Date>();
+  const [selectedTeam, setSelectedTeam] = useState<string>("");
   
   const {
     register,
@@ -47,15 +51,25 @@ export default function CreateRetroForm({ onSuccess }: { onSuccess?: () => void 
     addRetro({
       title: data.title,
       description: data.description,
-      teamId: data.teamId,
+      teamId: selectedTeam || teams[0]?.id || "1",
       date: format(date, 'yyyy-MM-dd'),
       status: 'upcoming',
       items: [],
     });
     
+    toast({
+      title: "Retrospective Created",
+      description: "Your new retrospective has been created successfully.",
+    });
+    
     reset();
     setDate(undefined);
     if (onSuccess) onSuccess();
+  };
+  
+  const handleCancel = () => {
+    reset();
+    setDate(undefined);
   };
   
   return (
@@ -90,6 +104,7 @@ export default function CreateRetroForm({ onSuccess }: { onSuccess?: () => void 
                 "w-full justify-start text-left font-normal",
                 !date && "text-muted-foreground"
               )}
+              type="button"
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
               {date ? format(date, 'PPP') : <span>Pick a date</span>}
@@ -109,7 +124,7 @@ export default function CreateRetroForm({ onSuccess }: { onSuccess?: () => void 
       
       <div className="space-y-2">
         <Label htmlFor="teamId">Team</Label>
-        <Select>
+        <Select value={selectedTeam} onValueChange={setSelectedTeam}>
           <SelectTrigger>
             <SelectValue placeholder="Select Team" />
           </SelectTrigger>
@@ -124,9 +139,11 @@ export default function CreateRetroForm({ onSuccess }: { onSuccess?: () => void 
       </div>
       
       <div className="flex justify-end gap-2">
-        <Button type="button" variant="outline" onClick={() => reset()}>
-          Cancel
-        </Button>
+        <DialogClose asChild>
+          <Button type="button" variant="outline" onClick={handleCancel}>
+            Cancel
+          </Button>
+        </DialogClose>
         <Button type="submit" disabled={isSubmitting || !date}>
           Create Retrospective
         </Button>
